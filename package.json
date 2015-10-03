@@ -10,6 +10,9 @@
     "node-dir": "~0.1.10",
     "jsonfile": "~2.2.2"
   },
+  "dependencies": {
+    "natural": "~0.2.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mrshu/tosdr-topic-suggester.git"
