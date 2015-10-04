@@ -55,30 +55,41 @@ function dump(topics) {
       jf.readFile(path, function (err, obj) {
         if (err) throw err;
 
-        if (obj.topics !== undefined) {
-          var topic = obj.topics.pop();
-          var title = obj.title ? obj.title : '';
-          var description = obj.tosdr.tldr ? obj.tosdr.tldr : '';
-
-          topic = topic.replace('user information', 'user-info');
-          topic = topic.replace('personal information', 'personal-data');
-          topic = topic.replace(' ', '-')
-          topic = topic.replace(/^scope.*license$/, 'copyright-scope');
-          topic = topic.replace(/^law.*gov.*/, 'law-gov');
-          topic = topic.replace(/^third.*/, 'third');
-          topic = topic.replace(/\%.*$/, '');
-
-          if (topics.indexOf(topic) == -1) {
-            next();
-            return;
-          }
-
-          out.push({
-            'topic': topic,
-            'title': title,
-            'description': description
-          });
+        if (obj.topics === undefined ||
+            obj.tosdr === undefined ||
+            obj.tosdr.irrelevant == true ||
+            obj.set !== undefined) {
+          next();
+          return;
         }
+
+        var topic = obj.topics.pop();
+        var title = obj.title ? obj.title : '';
+        var description = obj.tosdr.tldr ? obj.tosdr.tldr : '';
+
+        topic = topic.replace('user information', 'user-info');
+        topic = topic.replace('personal information', 'personal-data');
+        topic = topic.replace(' ', '-')
+        topic = topic.replace(/^scope.*license$/, 'copyright-scope');
+        topic = topic.replace(/^law.*gov.*/, 'law-gov');
+        topic = topic.replace(/^third.*/, 'third');
+        topic = topic.replace(/\%.*$/, '');
+
+        if (topics.indexOf(topic) == -1) {
+          next();
+          return;
+        }
+
+        if (title.length < 20) {
+          next();
+          return;
+        }
+
+        out.push({
+          'topic': topic,
+          'title': title + ' ' + description,
+          'description': description
+        });
 
         next();
       });

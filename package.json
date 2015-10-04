@@ -11,7 +11,10 @@
     "jsonfile": "~2.2.2"
   },
   "dependencies": {
-    "natural": "~0.2.1"
+    "nan": "^2.0.9",
+    "natural": "~0.2.1",
+    "stopwords": "~0.0.5",
+    "underscore": "~1.8.3"
   },
   "repository": {
     "type": "git",
